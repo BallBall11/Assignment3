@@ -35,6 +35,9 @@ args = parser.parse_args()
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 if torch.cuda.is_available():
     torch.cuda.set_device(args.gpu)
+    print('Now using gpu.')
+else :
+    print('Now using Cpu')
 
 def set_seed(seed):
     torch.backends.cudnn.deterministic = True
@@ -100,6 +103,7 @@ print('=========================================================================
 print('                                Start training:')
 print('===================================================================================')
 
+start_time = time.time()
 best_epoch = None
 best_val_loss = None
 
@@ -125,6 +129,9 @@ for epoch in range(args.epochs):
 
         ema(model)
         step += 1
+        if not ((step-1) % 100):
+            print('  Batch: {:03d} Curr. loss: {:.7f}'.format(step-1,loss_all/(step)))
+
 
     train_loss = loss_all / len(train_loader.dataset)
 
@@ -135,8 +142,10 @@ for epoch in range(args.epochs):
         best_epoch = epoch
         best_val_loss = val_loss
 
+    now_time = time.time()
+    
     print('Epoch: {:03d}, Train MAE: {:.7f}, Validation MAE: {:.7f}, '
-          'Test MAE: {:.7f}'.format(epoch+1, train_loss, val_loss, test_loss))
+          'Test MAE: {:.7f}, Time(min): {:.2f}'.format(epoch+1, train_loss, val_loss, test_loss,(now_time-start_time)/60))
 
 print('===================================================================================')
 print('Best Epoch:', best_epoch)

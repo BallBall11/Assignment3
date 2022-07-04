@@ -5,7 +5,7 @@ Code for the Multiplex Molecular Graph Neural Network (MXMNet) proposed in our [
 ## Overall Architecture
 
 <p align="center">
-<img src="https://github.com/zetayue/MXMNet/blob/master/MXMNet.png?raw=true">
+<img src=MXMNet.png>
 </p>
 
 ## Requirements
